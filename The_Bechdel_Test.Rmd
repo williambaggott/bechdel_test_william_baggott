@@ -1,7 +1,7 @@
 ---
 title: "Bechdel Test"
 author: "Created by Mine Çetinkaya-Rundel"
-output: html_document
+output: github_document
 ---
 <!--- you might change html_document to github_document if you are working with GitHub--->
 
@@ -22,7 +22,7 @@ We start with loading the packages we'll use.
 
 ```{r load-packages, message=FALSE}
 library(fivethirtyeight)
-library(Tidyverse)
+library(tidyverse)
 ```
 
 The dataset contains information on `r nrow(bechdel)` movies released between `r min(bechdel$year)` and `r max(bechdel$year)`.
@@ -35,9 +35,9 @@ bechdel90_13 <- bechdel %>%
 
 > What is the `%>%` inside the code? What does it do? How did you determine your answer?   
 
+"%>%" allows you to move the data from one set to another, and can chain functions together. [Source.](https://stackoverflow.com/questions/24536154/what-does-mean-in-r)  
 
-
-There are `___` such movies.
+There are `1615` such movies.
 
 The financial variables we'll focus on are the following:
 
@@ -54,14 +54,14 @@ Let's take a look at how median budget and gross vary by whether the movie passe
 ```{r message = FALSE}
 bechdel90_13 %>%
   group_by(binary) %>%
-  summarise(med_budget = median(budget_2031),
+  summarise(med_budget = median(budget_2013),
             med_domgross = median(domgross_2013, na.rm = TRUE),
             med_intgross = median(intgross_2013, na.rm = TRUE))
 ```
 
 > What does `summarise()` do? How did you look it up?  
 
-
+Summarise makes a new data frame in order to present the data you have collected. I found it by using ?summarise to look up the function in the help section.  
 
 
 Next, let's take a look at how median budget and gross vary by a more detailed indicator of the Bechdel test result.
@@ -75,7 +75,7 @@ This information is stored in the `clean_test` variable, which takes on the foll
 
 ```{r message = FALSE}
 bechdel90_13 %>%
-  group_by(___) %>%  #fill in the gap with the right variable
+  group_by(clean_test) %>%  #fill in the gap with the right variable
   summarise(med_budget = median(budget_2013),
             med_domgross = median(domgross_2013, na.rm = TRUE),
             med_intgross = median(intgross_2013, na.rm = TRUE))
@@ -94,12 +94,12 @@ Let's see which movies have the highest return on investment.
 ```{r}
 bechdel90_13 %>%
   arrange(desc(roi)) %>% 
-  select(title, roi, year
+  select(title, roi, year)
 ```
 
 > What does `select()` do? How did you look it up?  
 
-
+"Select" picks the variables in a data set to use for your code, instead of using all the data. Found this by using the search function in help to look up select and see what it does.  
 
 
 
@@ -107,11 +107,11 @@ Below is a visualization of the return on investment by test result, however it'
 
 ```{r warning = FALSE}
 ggplot(data = bechdel90_13, 
-       mapping = aes(x = clean_test, y = roi color = binary)) +
+       mapping = aes(x = clean_test, y = roi, color = binary)) +
   geom_boxplot() +
   labs(title = "Return on investment vs. Bechdel test result",
        x = "Detailed Bechdel result",
-       y = "___",
+       y = "Return On Investment",
        color = "Binary Bechdel result")
 ```
 
@@ -139,5 +139,5 @@ ggplot(data = bechdel90_13, mapping = aes(x = clean_test, y = roi, color = binar
 
 > What did you learn from the data analysis included in the document?  
 
-
+Movies that pass the Bechdel Test seem to get a return on investment more often than movies that do not.
 
